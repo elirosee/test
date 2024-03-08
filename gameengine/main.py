@@ -64,7 +64,34 @@ class Game:
  
     def update(self):
         self.all_sprites.update()
- 
+
+    def __init__ (self):
+        self.start_time = None 
+        self.countdown_duration = 60
+
+    def run(self):
+        self.playing = True
+        self.start_time=pg.time.get_ticks()
+        while self.playing:
+            self.dt = self.clocl.tick(FPS) / 1000
+            self.events()
+            self.update()
+            self.draw()
+            self.update_timer()
+    def update_timer(self): 
+        if self.start_time is not None:
+            elapsed_time = (pg.time.get_ticks() - self.start_time) // 1000
+            remaining_time = max(0, self.countdown_duration - elapsed_time)
+
+            if remaining_time == 0:
+                print("Game Over - Time's up!")
+                self.playing = False
+
+            self.draw_text(self.screen,f"Time: {remaining_time} seconds", 24, BLACK, 1, 1)
+    
+
+
+
     def draw_grid(self):
         for x in range(0, WIDTH, TILESIZE):
             pg.draw.line(self.screen, LIGHTGREY, (x, 0), (x, HEIGHT))
@@ -74,7 +101,7 @@ class Game:
         self.screen.fill(BGCOLOR)
         self.draw_grid()
         self.all_sprites.draw(self.screen)
-        self.draw_text(self.screen, "WELCOME PLAYER 12345", 42, BLACK, 1, 1)
+        self.draw_text(self.screen, "WELCOME PLAYER", 42, BLACK, 1, 1)
  
         pg.display.flip()
  

@@ -19,6 +19,8 @@ class Game:
         self.clock = pg.time.Clock()
         pg.key.set_repeat(500, 100)
         self.load_data()
+        self.start_time = None
+        self.countdown_duration = 60
     # load save game data etc...
     def load_data(self):
         game_folder = path.dirname(__file__)
@@ -65,15 +67,12 @@ class Game:
     def update(self):
         self.all_sprites.update()
 
-    def __init__ (self):
-        self.start_time = None 
-        self.countdown_duration = 60
 
     def run(self):
         self.playing = True
         self.start_time=pg.time.get_ticks()
         while self.playing:
-            self.dt = self.clocl.tick(FPS) / 1000
+            self.dt = self.clock.tick(FPS) / 1000
             self.events()
             self.update()
             self.draw()
